@@ -9,6 +9,6 @@ class Cliente(BaseModel):
     documento: int
     fecha_nac: date
     direccion: str
-    celular: str
+    celular: int
     email: str
     rolid: int
