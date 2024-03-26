@@ -40,6 +40,7 @@ def create_cliente(cliente: Cliente):
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
+
 # Actualizar un cliente por su ID
 @clienteRoutes.put("/clientes/{id}", tags=["clientes"], response_model=Cliente, description="Update a client by ID")
 def update_cliente(id: int, cliente: Cliente):
