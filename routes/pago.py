@@ -30,8 +30,9 @@ def get_pago(id: int):
         if existing_pago:
             return existing_pago
         else:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Pago not found")
+            return []
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 # Crear un nuevo pago

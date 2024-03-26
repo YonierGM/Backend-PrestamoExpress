@@ -11,6 +11,27 @@ from bcrypt import hashpw, gensalt
 
 usuarioRoutes = APIRouter()
 
+from fastapi import HTTPException, status
+from pydantic import BaseModel
+
+@usuarioRoutes.post("/login", tags=["usuarios"], description="Login and verify user credentials")
+def login(usuario: Usuario):
+    # Verificar si existe el usuario
+    existing_usuario = conn.execute(usuarios.select().where(usuarios.c.username == usuario.username)).first()
+    if existing_usuario:
+        # Verificar la contraseña
+        if existing_usuario.passw == usuario.passw:
+            # Verificar el rol
+            if existing_usuario.rolid == usuario.rolid:
+                return {"message": "Login successful", "rol": existing_usuario.rolid}
+            else:
+                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Unauthorized access: Incorrect role")
+        else:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized access: Incorrect password")
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario not found")
+
+
 # Obtener todos los usuarios
 @usuarioRoutes.get("/usuarios", tags=["usuarios"], response_model=List[Usuario], description="Get a list of all users")
 def get_usuarios():
