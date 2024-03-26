@@ -6,6 +6,11 @@ from config.db import conn
 from models.cliente import clientes
 from schemas.cliente import Cliente
 
+from cryptography.fernet import Fernet
+
+key=Fernet.generate_key()
+cifrado=Fernet(key)
+
 clienteRoutes = APIRouter()
 
 # Obtener todos los clientes
@@ -24,10 +29,11 @@ def get_cliente(id: int):
             "nombre": result.nombre.strip() if isinstance(result.nombre, str) else result.nombre,
             "apellido": result.apellido.strip() if isinstance(result.apellido, str) else result.apellido,
             "documento": result.documento,
-            "fecha_nac": str(result.fecha_nac),  # Convertir a cadena si es necesario
-            "direccion": result.direccion.strip() if isinstance(result.direccion, str) else result.direccion,
-            "celular": result.celular.strip() if isinstance(result.celular, str) else result.celular,
             "email": result.email.strip() if isinstance(result.email, str) else result.email,
+            "celular": result.celular.strip() if isinstance(result.celular, str) else result.celular,
+            "profesion": result.profesion.strip() if isinstance(result.profesion, str) else result.profesion,
+            "ingresosMensuales": result.ingresosMensuales,
+            "contrasena": result.contrasena.strip() if isinstance(result.contrasena, str) else result.contrasena,
             "rolid": result.rolid
         }
         print(clean_result)
@@ -39,7 +45,7 @@ def get_cliente(id: int):
 @clienteRoutes.post("/clientes", tags=["clientes"], response_model=Cliente, description="Create a new client")
 def create_cliente(cliente: Cliente):
     try:
-        new_cliente = {"nombre": cliente.nombre, "apellido": cliente.apellido, "documento": cliente.documento, "fecha_nac": cliente.fecha_nac, "direccion": cliente.direccion, "celular": cliente.celular, "email": cliente.email, "rolid": cliente.rolid}
+        new_cliente = {"nombre": cliente.nombre, "apellido": cliente.apellido, "documento": cliente.documento, "email": cliente.email, "celular": cliente.celular, "profesion": cliente.profesion, "ingresosMensuales": cliente.ingresosMensuales, "contrasena": cliente.contrasena,"rolid": cliente.rolid}
         result = conn.execute(insert(clientes).values(new_cliente))
         new_cliente["clienteid"] = result.inserted_primary_key[0]
         conn.commit()
@@ -54,7 +60,7 @@ def update_cliente(id: int, cliente: Cliente):
     if existing_cliente:
         conn.execute(
             clientes.update()
-            .values(nombre=cliente.nombre, apellido=cliente.apellido, documento=cliente.documento, fecha_nac=cliente.fecha_nac, direccion=cliente.direccion, celular=cliente.celular, email=cliente.email, rolid=cliente.rolid)
+            .values(nombre=cliente.nombre, apellido=cliente.apellido, documento=cliente.documento, email=cliente.email, celular=cliente.celular, profesion=cliente.profesion, ingresosMensuales=cliente.ingresosMensuales, contrasena=cliente.contrasena, rolid=cliente.rolid)
             .where(clientes.c.clienteid == id)
         )
         conn.commit()

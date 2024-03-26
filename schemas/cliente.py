@@ -7,8 +7,9 @@ class Cliente(BaseModel):
     nombre: str
     apellido: str
     documento: int
-    fecha_nac: date
-    direccion: str
-    celular: str
     email: str
+    celular: str
+    profesion: str
+    ingresosMensuales: int
+    contrasena: str
     rolid: int
