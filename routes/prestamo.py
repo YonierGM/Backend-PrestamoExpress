@@ -58,7 +58,8 @@ def get_prestamo(id: int):
 # Se buscara los prestamos del cliente
 @prestamoRoutes.get("/prestamoscliente/{id}", tags=["prestamos"], response_model=List[Prestamo], description="Se buscara los prestamos del cliente")
 def get_prestamocliente(id: int):
-    existing_prestamo = conn.execute(prestamos.select().where(prestamos.c.clienteid == id)).fetchall()
+    existing_prestamo = conn.execute(prestamos.select().where(prestamos.c.clienteid == id).order_by(prestamos.c.estadoid)).fetchall()
+
     if existing_prestamo:
         return existing_prestamo
     else:
