@@ -53,7 +53,7 @@ def update_cliente(id: int, cliente: Cliente):
         conn.commit()
         return status.HTTP_200_OK
     else:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cliente not found")
+         return status.HTTP_404_NOT_FOUND
 
 # Eliminar un cliente por su ID
 @clienteRoutes.delete("/clientes/{id}", tags=["clientes"])
