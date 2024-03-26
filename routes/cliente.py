@@ -52,7 +52,7 @@ def update_cliente(id: int, cliente: Cliente):
             .where(clientes.c.clienteid == id)
         )
         conn.commit()
-        return status.HTTP_200_OK
+        return existing_cliente
     else:
          return status.HTTP_404_NOT_FOUND
 
