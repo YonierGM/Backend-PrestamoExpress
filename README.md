@@ -1,6 +1,7 @@
 # Sistema Gestión de prestamos PrestamoExpress
 
 Como usar:
+Ejecutar con: uvicorn app:backend --reload <br /> <br />
 important tener tambien ya corriendo el ciente en React para poder acceder a los datos de una manera visual y amigable.  repo aquí: https://github.com/Ricanibal/PrestamoExpressFront
 Dentro de la carpeta DB está un aql con el script de la base de datos. <br />
       (Importante Utilizar los insert ya creados en el archivo, para ahorrar tiempo, conservar el orden y estructura de los datos) <br />
